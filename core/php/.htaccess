@@ -1,2 +1,4 @@
-Order allow,deny
-Deny from all
+#Modification 20261011
+#Order allow,deny
+#Deny from all
+Require ip 127.0.0.1 ::1

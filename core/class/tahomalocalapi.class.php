@@ -119,6 +119,14 @@ public static function dependancy_info() {
 	return $return;
 }
 
+private static function getVenvPython() { // Modification du 20261011
+	$venvDir = realpath(dirname(__FILE__) . '/../../resources/python_venv');
+	if ($venvDir !== false && is_file($venvDir . '/bin/python3')) {
+		return $venvDir . '/bin/python3';
+	}
+	return '';
+}
+  
 /* Start daemon */
 public static function deamon_start() {
   config::save('tahomalocalapi_restartDaemonInProgress', 'O','tahomalocalapi');
@@ -127,8 +135,15 @@ public static function deamon_start() {
   if ($deamon_info['launchable'] != 'ok') {
       throw new Exception(__('Veuillez vérifier la configuration', __FILE__));
   }
+  
+  // Modification 20261011 // $uuid =(config::byKey('tahomalocalapi_session',  __CLASS__))['uuid'];
 
-  $uuid =(config::byKey('tahomalocalapi_session',  __CLASS__))['uuid'];
+  $tahomaSession = config::byKey('tahomalocalapi_session', __CLASS__);
+  if (!is_array($tahomaSession)) {
+      $tahomaSession = array();
+  }
+  $uuid = isset($tahomaSession['uuid']) ? $tahomaSession['uuid'] : '';
+  
   if ($uuid == '') {
         $uuid = self::guidv4();
         log::add(__CLASS__, 'info', '  - no uuid for this jeedom box, generate it -> ' . $uuid);
@@ -143,7 +158,11 @@ public static function deamon_start() {
   }
 
   $path = realpath(dirname(__FILE__) . '/../../resources/tahomalocalapid'); 
-  $cmd = 'python3 ' . $path . '/tahomalocalapid.py'; // nom du démon
+  
+  // Modification du 20261011 //$cmd = 'python3 ' . $path . '/tahomalocalapid.py'; // nom du démon
+  $venvPython = self::getVenvPython();
+  $cmd = ($venvPython !== '' ? escapeshellarg($venvPython) : 'python3') . ' ' . $path . '/tahomalocalapid.py'; // nom du démon
+  
   $cmd .= ' --loglevel ' . log::convertLogLevel(log::getLogLevel(__CLASS__));
   $cmd .= ' --socketport ' . config::byKey('socketport', __CLASS__, '55009'); // port du daemon
   $cmd .= ' --callback ' . network::getNetworkAccess('internal', 'proto:127.0.0.1:port:comp') . '/plugins/tahomalocalapi/core/php/jeeTahomalocalapi.php'; // chemin de la callback url 
@@ -168,7 +187,7 @@ public static function deamon_start() {
       sleep(1);
       $i++;
   }
-  if ($i >= 30) {
+   if ($i >= 20) { // Modification du 20261011 //if ($i >= 30) { 
       log::add(__CLASS__, 'error', __('Impossible de lancer le démon, vérifiez le log', __FILE__), 'unableStartDeamon');
       config::save('tahomalocalapi_restartDaemonInProgress', 'N','tahomalocalapi');
       return false;
@@ -1415,7 +1434,7 @@ public static function checkGateways($gatewaysList) {
     $now = time();
 	$sendDaemonNotifError=config::byKey('cfgAlertErrorOnDaemon', __CLASS__);
 
-    if (($now - $healthCheckTime) > 600) {
+    if (is_numeric($healthCheckTime) && ($now - $healthCheckTime) > 600) { // Modif du 20261011 //if (($now - $healthCheckTime) > 600) {
 		if ($sendDaemonNotifError == '1') {
 			log::add(__CLASS__, 'error', __FUNCTION__ . ' !!!! Plus de communication avec le daemon depuis plus de 5 minutes ...' . ($now - $healthCheckTime) . 's');
 		}
