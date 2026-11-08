@@ -4,6 +4,22 @@
 >
 >S'il n'y a pas d'information sur la mise à jour, c'est que celle-ci concerne uniquement de la mise à jour de documentation, de traduction ou de texte.
 
+# 08/11/2026
+- Ajout et mise à jour des images des équipements et composants TaHoma.
+- Réorganisation des images des composants.
+- Correction du fonctionnement du bouton « Infos ».
+- Suppression du bouton « Créer un post Community ».
+
+# 07/11/2026
+- Correction du traitement des commandes : arrêt de l'exécution après l'envoi de la commande au démon, afin d'éviter la poursuite de l'ancien traitement.
+
+# 11/10/2026
+- Adaptation du plugin pour assurer son fonctionnement sous Debian 12.
+
+# 31/12/2025
+- Fusion de la branche beta dans la branche master.
+- Correction d'une erreur PHP.
+
 # 31/12/2025
 - merge branche beta sur branche master + correction erreur php
 
