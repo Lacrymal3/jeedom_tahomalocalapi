@@ -324,7 +324,7 @@ public static function getDevicesDetails() {
             log::add(__CLASS__, 'debug', '|         - device not found : '. $device['deviceURL']);
         }
 
-        $typeMef=str_replace(array('internal:','io:','rts:'),array(''),$device['controllableName']);
+      	$typeMef = preg_replace('/^[^:]+:/', '', $device['controllableName']);
         $path='/var/www/html/plugins/tahomalocalapi/data/img/custom/' . $typeMef . '.png';
 
         log::add(__CLASS__, 'debug', '             - '.     $path );
@@ -345,13 +345,13 @@ public static function getDevicesDetails() {
 }
 
 public function getImage() {
-    $typeMef=str_replace(array('internal:','io:','rts:'),array(''),$this->getConfiguration('type'));
+  	$typeMef = preg_replace('/^[^:]+:/', '', $this->getConfiguration('type'));
     $path='/var/www/html/plugins/tahomalocalapi/data/img/custom/' . $typeMef . '.png';
 
     if (!(file_exists($path))) {
         $path = '/var/www/html/plugins/tahomalocalapi/data/img/' . $typeMef . '.png';
         if (!(file_exists($path))) {
-            $path = 'plugins/tahomalocalapi/data/img/io_logo.png';
+            $path = 'plugins/tahomalocalapi/data/img/Logo.png';
         }
     }
 
@@ -360,8 +360,8 @@ public function getImage() {
   	return str_replace(array('/var/www/html/'),array(''),$path);
 }
 
-public function imageExist($componentName) {
-    $typeMef=str_replace(array('internal:','io:','rts:'),array(''),$componentName);
+public static function imageExist($componentName) {
+  	$typeMef = preg_replace('/^[^:]+:/', '', $componentName);
     $path='/var/www/html/plugins/tahomalocalapi/data/img/custom/' . $typeMef . '.png';
 
     if (!(file_exists($path))) {
@@ -1673,6 +1673,5 @@ class tahomalocalapiCmd extends cmd {
     }
 
   }
-
   /*     * **********************Getteur Setteur*************************** */
 }

@@ -44,7 +44,7 @@ $eqLogics = eqLogic::byType($plugin->getId());
 							<span>{{Infos}}</span>
                             <div style="display:none">
                                 <span class="txtInfoPlugin">
-                                    Si vous avez des questions ou anomalies vous pouvez poster un message sur le <a href="https://community.jeedom.com/t/commande-somfy-tahoma-avec-l-api-locale" target="_blank"><span style="color:rgb(27,161,242);"> forum community</span> <i class="fas fa-external-link-alt"></i></a>								
+                                    Si vous avez des questions ou anomalies vous pouvez poster un message sur le <a href="https://community.jeedom.com" target="_blank"><span style="color:rgb(27,161,242);"> forum community</span> <i class="fas fa-external-link-alt"></i></a>								
                                     <br /><br />Appuyez sur le bouton 'copier' en bas de la fenêtre pour récupérer l'ensemble des informations affichées, et partagez/collez-les à chaque nouveau post sur le forum !
                                     <br /><br />
                                 </span>
@@ -53,26 +53,6 @@ $eqLogics = eqLogic::byType($plugin->getId());
 					</div>
 				</div>
 			</div>  
-			<?php
-			// à conserver
-			// sera afficher uniquement si l'utilisateur est en version 4.4 ou supérieur
-			$jeedomVersion  = jeedom::version() ?? '0';
-			$displayInfoValue = version_compare($jeedomVersion, '4.4.0', '>=');
-			if ($displayInfoValue) {
-			?>
-				<div class="col-sm-2">
-					<legend><i class=" fas fa-comments"></i> {{Community}}</legend>
-					<div class="eqLogicThumbnailContainer">
-						<div class="cursor eqLogicAction logoSecondary" data-action="createCommunityPost">
-							<i class="fas fa-ambulance"></i>
-							<br>
-							<span style="color:var(--txt-color)">{{Créer un post Community}}</span>
-						</div>
-					</div>
-				</div>
-			<?php
-			}
-			?>
 		</div>
 		<legend><i class="fas fa-table"></i> {{Mes équipements Somfy}}</legend>
 		<?php
